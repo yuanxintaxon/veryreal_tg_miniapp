@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:android_path_provider/android_path_provider.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:crypto/crypto.dart';
-import 'package:cryptography/cryptography.dart';
 import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit.dart';
 import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit_config.dart';
 import 'package:ffmpeg_kit_flutter_full_gpl/ffprobe_kit.dart';
@@ -1117,22 +1116,6 @@ class IMUtils {
     var digest = sha512256.convert(bytes);
 
     return digest.toString();
-  }
-
-  static Future<String> argonHash(String text) async {
-    final algorithm = Argon2id(
-      parallelism: 4,
-      memory: 10000, // 10 000 x 1kB block = 10 MB
-      iterations: 2,
-      hashLength: 32,
-    );
-
-    final newSecretKey = await algorithm.deriveKey(
-      secretKey: SecretKey([2, 4, 0, 1]),
-      nonce: [1, 0, 2, 4],
-    );
-
-    return newSecretKey.toString();
   }
 
   static void apkDownload() async {

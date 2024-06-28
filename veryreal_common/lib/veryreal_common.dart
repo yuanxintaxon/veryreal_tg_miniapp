@@ -110,7 +110,6 @@ export 'src/widgets/notification_dot.dart';
 export 'src/widgets/photo_browser_bottom_bar.dart';
 export 'src/widgets/pop_button.dart';
 export 'src/widgets/qr_scan_box.dart';
-export 'src/widgets/qr_view.dart';
 export 'src/widgets/search_box.dart';
 export 'src/widgets/slide_hero.dart';
 export 'src/widgets/status_dot.dart';

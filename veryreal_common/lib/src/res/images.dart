@@ -40,7 +40,7 @@ class ImageRes {
   static const eyeOpen = "$_dir/ic_eye_open.webp";
   static const eyeClose = "$_dir/ic_eye_close.webp";
   static const clearText = "$_dir/ic_clear_text.webp";
-  static const searchGrey = "$_dir/ic_search_gery.webp";
+  static const searchGrey = "$_dir/ic_search_grey.webp";
   static const syncFailed = "$_dir/ic_sync_failed.webp";
   static const leftChevronBlack = "$_dir/ic_left_chevron_black.webp";
   static const leftChevronWhite = "$_dir/ic_left_chevron_white.webp";

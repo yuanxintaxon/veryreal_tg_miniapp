@@ -52,7 +52,7 @@ class HttpUtil {
       }));
 
     // 配置dio实例
-    dio.options.baseUrl = Config.imApiUrl;
+    dio.options.baseUrl = Config.appBusinessUrl;
     dio.options.connectTimeout = const Duration(seconds: 30); //30s
     dio.options.receiveTimeout = const Duration(seconds: 30);
   }
@@ -463,7 +463,7 @@ class HttpUtil {
     });
 
     var resp = await dio.post<Map<String, dynamic>>(
-      "${Config.imApiUrl}/third/minio_upload",
+      "${Config.appBusinessUrl}/third/minio_upload",
       data: formData,
       options: Options(headers: {'token': DataSp.imToken}),
     );

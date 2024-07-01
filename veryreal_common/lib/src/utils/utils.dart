@@ -942,36 +942,6 @@ class IMUtils {
     }
     */
   }
-
-  static void apkDownload() async {
-    try {
-      final uri = Uri.parse(Urls.apkLink);
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(
-          uri,
-        ); //open with in-app browser
-      } else {
-        throw 'Could not launch $uri';
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  static void iosDownload() async {
-    try {
-      final uri = Uri.parse(Urls.iosLink);
-      if (await canLaunchUrl(uri)) {
-        await launchUrl(
-          uri,
-        ); //open with in-app browser
-      } else {
-        throw 'Could not launch $uri';
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
 }
 
 extension LocaleExtension on Locale {

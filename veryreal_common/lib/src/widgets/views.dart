@@ -216,7 +216,7 @@ class IMViews {
 
           /// TOREPLACE
           /*
-          return OpenIM.iMManager.uploadFile(
+          return.uploadFile(
             id: putID,
             filePath: image!.path,
             fileName: image.path.split('/').last,
@@ -231,7 +231,7 @@ class IMViews {
 
           /// TOREPLACE
           /*
-          return OpenIM.iMManager.uploadFile(
+          return uploadFile(
             id: putID,
             filePath: image!.path,
             fileName: image.path,

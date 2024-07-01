@@ -2,32 +2,21 @@ import 'dart:async';
 import 'dart:convert';
 // import 'dart:html' as html;
 import 'dart:io';
-import 'package:android_path_provider/android_path_provider.dart';
+
 import 'package:common_utils/common_utils.dart';
 import 'package:crypto/crypto.dart';
-import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit.dart';
-import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit_config.dart';
-import 'package:ffmpeg_kit_flutter_full_gpl/ffprobe_kit.dart';
-import 'package:ffmpeg_kit_flutter_full_gpl/return_code.dart';
-import 'package:ffmpeg_kit_flutter_full_gpl/session_state.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:intl/intl.dart' as intl;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:google_api_availability/google_api_availability.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
-import 'package:intl/intl.dart' as intl;
-import 'package:local_auth/local_auth.dart';
-import 'package:local_auth_android/local_auth_android.dart';
-import 'package:local_auth_darwin/local_auth_darwin.dart';
 import 'package:mime/mime.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sprintf/sprintf.dart';
-import 'package:uri_to_file/uri_to_file.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:veryreal_common/veryreal_common.dart';
 
@@ -118,6 +107,40 @@ class IMUtils {
     );
   }
 
+  ///  compress file and get file.
+  static Future<File?> compressImageAndGetFile(File file,
+      {int quality = 80}) async {
+    var path = file.path;
+    var name = path.substring(path.lastIndexOf("/") + 1);
+    var targetPath = await createTempFile(name: name, dir: 'pic');
+    if (name.endsWith('.gif')) {
+      return file;
+    }
+
+    CompressFormat format = CompressFormat.jpeg;
+    if (name.endsWith(".jpg") || name.endsWith(".jpeg")) {
+      format = CompressFormat.jpeg;
+    } else if (name.endsWith(".png")) {
+      format = CompressFormat.png;
+    } else if (name.endsWith(".heic")) {
+      format = CompressFormat.heic;
+    } else if (name.endsWith(".webp")) {
+      format = CompressFormat.webp;
+    }
+
+    var result = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path,
+      targetPath,
+      quality: quality,
+      minWidth: 480,
+      minHeight: 800,
+      // minHeight: 1920,
+      // minWidth: 1080,
+      format: format,
+    );
+    return result != null ? File(result.path) : null;
+  }
+
   static String getSuffix(String url) {
     if (!url.contains(".")) return "";
     return url.substring(url.lastIndexOf('.'), url.length);
@@ -135,12 +158,6 @@ class IMUtils {
   static Future<String?> paste() async {
     final clipboardData = await Clipboard.getData(Clipboard.kTextPlain);
     return clipboardData?.text;
-  }
-
-  static saveMediaToGallery(String mimeType, String cachePath) async {
-    if (mimeType.contains('video') || mimeType.contains('image')) {
-      await ImageGallerySaver.saveFile(cachePath);
-    }
   }
 
   static String? emptyStrToNull(String? str) =>
@@ -185,32 +202,6 @@ class IMUtils {
     return regex.hasMatch(password);
   }
 
-  /// 获取视频缩略图
-  static Future<File> getVideoThumbnail(File file) async {
-    final path = file.path;
-    final names = path.substring(path.lastIndexOf("/") + 1).split('.');
-    final name = '${names.first}.png';
-    final directory = await createTempDir(dir: 'video');
-    final targetPath = '$directory/$name';
-
-    final String ffmpegCommand =
-        '-i $path -ss 0 -vframes 1 -q:v 15 -y $targetPath';
-    final session = await FFmpegKit.execute(ffmpegCommand);
-
-    final state =
-        FFmpegKitConfig.sessionStateToString(await session.getState());
-    final returnCode = await session.getReturnCode();
-
-    if (state == SessionState.failed || !ReturnCode.isSuccess(returnCode)) {
-      Logger().printError(
-          info: "Command failed. Please check output for the details.");
-    }
-
-    session.cancel();
-
-    return File(targetPath);
-  }
-
   static String getFileNameFromUrl(String url) {
     Uri uri = Uri.parse(url);
     List<String> pathSegments = uri.pathSegments;
@@ -220,86 +211,6 @@ class IMUtils {
     } else {
       return "unknown_filename";
     }
-  }
-
-  ///  compress video
-  static Future<File?> compressVideoAndGetFile(File file) async {
-    final path = file.path;
-    final name = path.substring(path.lastIndexOf("/") + 1);
-    final directory = await createTempDir(dir: 'video');
-    final targetPath = '$directory/$name';
-
-    final output = await FFprobeKit.getMediaInformation(path);
-    final streams = output.getMediaInformation()?.getStreams();
-    final isH264 = streams
-            ?.any((element) => element.getCodec()?.contains('h264') == true) ??
-        false;
-    final size = output.getMediaInformation()?.getSize() ?? '0';
-    output.cancel();
-
-    if (File(targetPath).existsSync() && isH264) {
-      return File(targetPath);
-    }
-    // By default, everything below 1024M is uncompressed. If you want to compress it, you can change the value size.
-    if (int.parse(size) < 1024 * 1024 * 1024 && isH264) {
-      file.copySync(targetPath);
-      return File(targetPath);
-    }
-    // Compression is time consuming.
-    final String ffmpegCommand =
-        '-i $path -preset ultrafast -tune fastdecode -threads:v 16 -threads:a 1 -c:a copy -strict -2 -crf 20 -c:v libx264 -y '
-        '$targetPath';
-    final session = await FFmpegKit.execute(ffmpegCommand);
-
-    final state =
-        FFmpegKitConfig.sessionStateToString(await session.getState());
-    final returnCode = await session.getReturnCode();
-
-    if (state == SessionState.failed || !ReturnCode.isSuccess(returnCode)) {
-      Logger().printError(
-          info: "Command failed. Please check output for the details.");
-      file.copySync(targetPath);
-
-      return File(targetPath);
-    }
-
-    session.cancel();
-
-    return File(targetPath);
-  }
-
-  ///  compress file and get file.
-  static Future<File?> compressImageAndGetFile(File file,
-      {int quality = 80}) async {
-    var path = file.path;
-    var name = path.substring(path.lastIndexOf("/") + 1);
-    var targetPath = await createTempFile(name: name, dir: 'pic');
-    if (name.endsWith('.gif')) {
-      return file;
-    }
-
-    CompressFormat format = CompressFormat.jpeg;
-    if (name.endsWith(".jpg") || name.endsWith(".jpeg")) {
-      format = CompressFormat.jpeg;
-    } else if (name.endsWith(".png")) {
-      format = CompressFormat.png;
-    } else if (name.endsWith(".heic")) {
-      format = CompressFormat.heic;
-    } else if (name.endsWith(".webp")) {
-      format = CompressFormat.webp;
-    }
-
-    var result = await FlutterImageCompress.compressAndGetFile(
-      file.absolute.path,
-      targetPath,
-      quality: quality,
-      minWidth: 480,
-      minHeight: 800,
-      // minHeight: 1920,
-      // minWidth: 1080,
-      format: format,
-    );
-    return result != null ? File(result.path) : null;
   }
 
   static Future<String?> getCacheFile({
@@ -384,70 +295,6 @@ class IMUtils {
       return context.isTablet ? 9 : 1; // ios and others
     }
   }
-
-  // md5 加密
-  static String? generateMD5(String? data) {
-    if (null == data) return null;
-    var content = const Utf8Encoder().convert(data);
-    var digest = md5.convert(content);
-    return digest.toString();
-  }
-
-  static Future<String> getCacheFileDir() async {
-    return (await getTemporaryDirectory()).absolute.path;
-  }
-
-  static Future<String> getDownloadFileDir() async {
-    String? externalStorageDirPath;
-    if (Platform.isAndroid) {
-      try {
-        externalStorageDirPath = await AndroidPathProvider.downloadsPath;
-      } catch (err, st) {
-        Logger.print('failed to get downloads path: $err, $st');
-        final directory = await getExternalStorageDirectory();
-        externalStorageDirPath = directory?.path;
-      }
-    } else if (Platform.isIOS) {
-      externalStorageDirPath =
-          (await getApplicationDocumentsDirectory()).absolute.path;
-    }
-    return externalStorageDirPath!;
-  }
-
-  static Future<String> toFilePath(String path) async {
-    var filePrefix = 'file://';
-    var uriPrefix = 'content://';
-    if (path.contains(filePrefix)) {
-      path = path.substring(filePrefix.length);
-    } else if (path.contains(uriPrefix)) {
-      // Uri uri = Uri.parse(thumbnailPath); // Parsing uri string to uri
-      File file = await toFile(path);
-      path = file.path;
-    }
-    return path;
-  }
-
-  static void previewUrlPicture(
-    List<MediaSource> sources, {
-    int currentIndex = 0,
-    String? heroTag,
-  }) =>
-      navigator?.push(TransparentRoute(
-        builder: (BuildContext context) => GestureDetector(
-          onTap: () => Get.back(),
-          child: VeryPicturePreview(
-            currentIndex: currentIndex,
-            images: sources,
-            heroTag: heroTag,
-            onLongPress: (url) {
-              IMViews.openDownloadSheet(
-                url,
-                onDownload: () => HttpUtil.saveUrlPicture(url),
-              );
-            },
-          ),
-        ),
-      ));
 
   static String getChatTimeline(int ms, [String formatToday = 'h:mm a']) {
     final locTimeMs = DateTime.now().millisecondsSinceEpoch;
@@ -874,35 +721,6 @@ class IMUtils {
     return formatDateMs(ms, format: dateFormat);
   }
 
-  static Future<bool> checkingBiometric(LocalAuthentication auth) =>
-      auth.authenticate(
-        localizedReason: '扫描您的指纹（或面部或其他）以进行身份验证',
-        options: const AuthenticationOptions(
-            // stickyAuth: true,
-            // biometricOnly: true,
-            ),
-        authMessages: <AuthMessages>[
-          const AndroidAuthMessages(
-            cancelButton: '不，谢谢',
-            biometricNotRecognized: '未能识别。 再试一次。',
-            biometricHint: '验证身份',
-            biometricSuccess: '成功',
-            biometricRequiredTitle: '需要身份验证',
-            goToSettingsDescription: "您的设备上未设置生物认证。 去设置 > 安全以添加生物识别身份验证。",
-            goToSettingsButton: '前往设置',
-            deviceCredentialsRequiredTitle: '需要设备凭据',
-            deviceCredentialsSetupDescription: '需要设备凭据',
-            signInTitle: '需要身份验证',
-          ),
-          const IOSAuthMessages(
-            cancelButton: '不，谢谢',
-            goToSettingsButton: '前往设置',
-            goToSettingsDescription: '您的设备上未设置生物认证。 请启用手机上的Touch ID或Face ID。',
-            lockOut: '生物认证被禁用。 请锁定和解锁您的屏幕以启用它。',
-          ),
-        ],
-      );
-
   static String getTimeFormat1() {
     String languageCountryCode =
         IMUtils.geAppElseDeviceLocale().toLanguageCountryCode();
@@ -1043,6 +861,35 @@ class IMUtils {
     */
   }
 
+// md5 加密
+  static String? generateMD5(String? data) {
+    if (null == data) return null;
+    var content = const Utf8Encoder().convert(data);
+    var digest = md5.convert(content);
+    return digest.toString();
+  }
+
+  static Future<String> getCacheFileDir() async {
+    return (await getTemporaryDirectory()).absolute.path;
+  }
+
+  static void previewUrlPicture(
+    List<MediaSource> sources, {
+    int currentIndex = 0,
+    String? heroTag,
+  }) =>
+      navigator?.push(TransparentRoute(
+        builder: (BuildContext context) => GestureDetector(
+          onTap: () => Get.back(),
+          child: VeryPicturePreview(
+            currentIndex: currentIndex,
+            images: sources,
+            heroTag: heroTag,
+            onLongPress: (url) {},
+          ),
+        ),
+      ));
+
   static void launchEmail({
     required String receiver,
     String subject = '',
@@ -1094,28 +941,6 @@ class IMUtils {
       IMViews.showToast(tips);
     }
     */
-  }
-
-  static Future<bool> checkPlayServices([bool showDialog = false]) async {
-    GooglePlayServicesAvailability playStoreAvailability;
-
-    try {
-      playStoreAvailability = await GoogleApiAvailability.instance
-          .checkGooglePlayServicesAvailability(showDialog);
-    } catch (e) {
-      playStoreAvailability = GooglePlayServicesAvailability.unknown;
-    }
-
-    Logger.print("creturn playStoreAvailability  $playStoreAvailability");
-
-    return playStoreAvailability == GooglePlayServicesAvailability.success;
-  }
-
-  static String sha512256Hash(String text) {
-    var bytes = utf8.encode(text);
-    var digest = sha512256.convert(bytes);
-
-    return digest.toString();
   }
 
   static void apkDownload() async {

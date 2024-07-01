@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:veryreal_common/veryreal_common.dart';
 
-import 'very_video_player_view.dart';
-
 class VeryPicturePreview extends StatelessWidget {
   VeryPicturePreview({
     super.key,
@@ -13,7 +11,7 @@ class VeryPicturePreview extends StatelessWidget {
     this.heroTag,
     this.onTap,
     this.onLongPress,
-  })  : controller = images.length > 1
+  }) : controller = images.length > 1
             ? ExtendedPageController(initialPage: currentIndex, pageSpacing: 50)
             : null;
   final int currentIndex;
@@ -106,6 +104,7 @@ class VeryPicturePreview extends StatelessWidget {
               }
             case LoadState.completed:
               final url = source.url;
+              /*
               if (url.isVideoFileName) {
                 return Center(
                     child: VeryVideoPlayerView(
@@ -113,6 +112,7 @@ class VeryPicturePreview extends StatelessWidget {
                   coverUrl: source.thumbnail,
                 ));
               }
+              */
               return Center(
                 child: ExtendedImage.network(url),
               );

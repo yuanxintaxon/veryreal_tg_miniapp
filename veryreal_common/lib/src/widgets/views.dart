@@ -37,25 +37,25 @@ class IMViews {
     switch (code) {
       case "80306":
         Get.dialog(CustomConfirmDialog(
-          title: StrRes.invalidAddress,
+          title: StrRes.currentNetworkNotAvailable,
           confirmText: StrRes.retry,
         ));
         break;
       case "90101":
         Get.dialog(CustomConfirmDialog(
-          title: StrRes.error90101,
+          title: StrRes.currentNetworkNotAvailable,
           confirmText: StrRes.acknowledged,
         ));
         break;
       case "90102":
         Get.dialog(CustomConfirmDialog(
-          title: StrRes.error90102,
+          title: StrRes.currentNetworkNotAvailable,
           confirmText: StrRes.acknowledged,
         ));
         break;
       case "90103":
         Get.dialog(CustomConfirmDialog(
-          title: StrRes.error90103,
+          title: StrRes.currentNetworkNotAvailable,
           confirmText: StrRes.acknowledged,
         ));
         break;
@@ -96,56 +96,6 @@ class IMViews {
           );
         },
       );
-
-  static openIMCallSheet(
-    String label,
-    Function(int index) onTapSheetItem,
-  ) {
-    return Get.bottomSheet(
-      BottomSheetView(
-        mainAxisAlignment: MainAxisAlignment.start,
-        items: [
-          SheetItem(
-            label: StrRes.callVoice,
-            icon: ImageRes.callVoice,
-            alignment: MainAxisAlignment.start,
-            onTap: () => onTapSheetItem.call(0),
-          ),
-          SheetItem(
-            label: StrRes.callVideo,
-            icon: ImageRes.callVideo,
-            alignment: MainAxisAlignment.start,
-            onTap: () => onTapSheetItem.call(1),
-          ),
-        ],
-      ),
-      // barrierColor: Colors.transparent,
-    );
-  }
-
-  static openIMGroupCallSheet(
-    String groupID,
-    Function(int index) onTapSheetItem,
-  ) {
-    return Get.bottomSheet(
-      BottomSheetView(
-        mainAxisAlignment: MainAxisAlignment.start,
-        items: [
-          SheetItem(
-            label: StrRes.callVoice,
-            icon: ImageRes.callVoice,
-            onTap: () => onTapSheetItem.call(0),
-          ),
-          SheetItem(
-            label: StrRes.callVideo,
-            icon: ImageRes.callVideo,
-            onTap: () => onTapSheetItem.call(1),
-          ),
-        ],
-      ),
-      // barrierColor: Colors.transparent,
-    );
-  }
 
   static void openPhotoSheet(
       {Function(dynamic path, dynamic url, dynamic bytes)? onData,

@@ -18,7 +18,7 @@ class GlassConvoBgView extends StatelessWidget {
         alignment: Alignment.center,
         fit: StackFit.expand,
         children: [
-          ImageRes.chatBgBubble6.toImageFitCover,
+          ImageRes.homeBg.toImageFitCover,
           _buildGlassPane(),
         ],
       ),

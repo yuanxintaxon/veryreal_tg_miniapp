@@ -3,7 +3,6 @@ import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:veryreal_common/veryreal_common.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
 
@@ -128,8 +127,7 @@ class HttpUtil {
       options.headers ??= {};
       Logger.print("creturn json ${(data)}");
       Logger.print("creturn json ${(data as Map<String, dynamic>)}");
-      Logger.print(
-          "creturn json ${(data)['invitationCode']}");
+      Logger.print("creturn json ${(data)['invitationCode']}");
       var result = await dio.post<Map<String, dynamic>>(
         path,
         data: data,
@@ -489,88 +487,6 @@ class HttpUtil {
     );
   }
 
-  static Future saveUrlPicture(
-    String url, {
-    CancelToken? cancelToken,
-    Function(int count, int total)? onProgress,
-  }) async {
-    final name = url.substring(url.lastIndexOf('/') + 1);
-    final cachePath = await IMUtils.createTempFile(dir: 'picture', name: name);
-    var intervalDo = IntervalDo();
-
-    return download(
-      url,
-      cachePath: cachePath,
-      cancelToken: cancelToken,
-      onProgress: (int count, int total) async {
-        if (total == -1) {
-          intervalDo.drop(
-              fun: () async {
-                await ImageGallerySaver.saveFile(cachePath);
-                IMViews.showToast("${StrRes.saveSuccessfully}($cachePath)",
-                    duration: const Duration(milliseconds: 3000));
-              },
-              milliseconds: 1500);
-        }
-        if (count == total) {
-          final result = await ImageGallerySaver.saveFile(cachePath);
-          if (result != null) {
-            var tips = StrRes.saveSuccessfully;
-            if (Platform.isAndroid) {
-              final filePath = result['filePath'].split('//').last;
-              tips = '${StrRes.saveSuccessfully}:$filePath';
-            }
-            IMViews.showToast(tips);
-          }
-        }
-      },
-    );
-  }
-
-  static Future saveImage(Image image) async {
-    var byteData = await image.toByteData(format: ImageByteFormat.png);
-    if (byteData != null) {
-      Uint8List uint8list = byteData.buffer.asUint8List();
-      var result =
-          await ImageGallerySaver.saveImage(Uint8List.fromList(uint8list));
-      if (result != null) {
-        var tips = StrRes.saveSuccessfully;
-        if (Platform.isAndroid) {
-          final filePath = result['filePath'].split('//').last;
-          tips = '${StrRes.saveSuccessfully}:$filePath';
-        }
-        IMViews.showToast(tips);
-      }
-    }
-  }
-
-  static Future saveUrlVideo(
-    String url, {
-    CancelToken? cancelToken,
-    Function(int count, int total)? onProgress,
-  }) async {
-    final name = url.substring(url.lastIndexOf('/') + 1);
-    final cachePath = await IMUtils.createTempFile(dir: 'video', name: name);
-    return download(
-      url,
-      cachePath: cachePath,
-      cancelToken: cancelToken,
-      onProgress: (int count, int total) async {
-        if (count == total) {
-          final result = await ImageGallerySaver.saveFile(cachePath);
-          if (result != null) {
-            var tips = StrRes.saveSuccessfully;
-            if (Platform.isAndroid) {
-              final filePath = result['filePath'].split('//').last;
-              tips = '${StrRes.saveSuccessfully}:$filePath';
-            }
-            IMViews.showToast(tips);
-          }
-        }
-      },
-    );
-  }
-
   static Future saveUrlVoice(
     String url,
     String cachePath, {
@@ -587,17 +503,5 @@ class HttpUtil {
         }
       },
     );
-  }
-
-  static void saveFileToGallerySaver(File file) async {
-    final result = await ImageGallerySaver.saveFile(file.path);
-    if (result != null) {
-      var tips = StrRes.saveSuccessfully;
-      if (Platform.isAndroid) {
-        final filePath = result['filePath'].split('//').last;
-        tips = '${StrRes.saveSuccessfully}:$filePath';
-      }
-      IMViews.showToast(tips);
-    }
   }
 }

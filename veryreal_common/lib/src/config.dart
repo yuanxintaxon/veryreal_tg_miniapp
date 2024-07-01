@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -107,10 +106,6 @@ class Config {
   static const uiW = 375.0;
   static const uiH = 812.0;
 
-  /// 默认公司配置
-  static const String deptName = "VeryReal";
-  static const String deptID = '0';
-
   /// 全局字体size
   static const double textScaleFactor = 1.0;
 
@@ -119,19 +114,9 @@ class Config {
 
   static const mapKey = '';
 
-  /// 二维码：scheme
-  static const friendScheme = "io.veryrealai.app/addFriend/";
-  static const groupScheme = "io.veryrealai.app/joinGroup/";
-
-  /// ip
-  /// web.rentsoft.cn
-  /// 203.56.175.233
-
-  // static const _host = "chat-dev.ai1268.com";
   // App environment initilization
   static String get _host => AppEnv.instance.config.serverHost;
   static String get _apiVersion => AppEnv.instance.config.serverVersion;
-  // static const _host = "chat.veryrealai.com";
 
   static const _ipRegex =
       '((2[0-4]\\d|25[0-5]|[01]?\\d\\d?)\\.){3}(2[0-4]\\d|25[0-5]|[01]?\\d\\d?)';
@@ -143,46 +128,7 @@ class Config {
     return _host;
   }
 
-  /// 商业版管理后台
-  /// $apiScheme://$host/complete_admin/
-  /// $apiScheme://$host:10009
-  /// 端口：10009
-  // static String get chatTokenUrl {
-  //   String? url;
-  //   var server = DataSp.getServerConfig();
-  //   if (null != server) {
-  //     url = server['chatTokenUrl'];
-  //     Logger.print('缓存chatTokenUrl: $url');
-  //   }
-  //   return url ??
-  //       (_isIP ? "http://$_host:10009" : "https://$_host/complete_admin");
-  // }
-
-  /// 登录注册手机验 证服务器地址
-  /// $apiScheme://$host/chat/
-  /// $apiScheme://$host:50008
-  /// 端口：50008
-  static String get appAuthUrl {
-    return (_isIP ? "http://$_host:10008" : "https://$_host/chat");
-  }
-
-  /// IM sdk api地址
-  /// $apiScheme://$host/api/
-  /// $apiScheme://$host:50002
-  /// 端口：50002
-  static String get imApiUrl {
-    return (_isIP ? 'http://$_host:10002' : "https://$_host/api");
-  }
-
-  /// IM ws 地址
-  /// $socketScheme://$host/msg_gateway
-  /// $socketScheme://$host:50001
-  /// 端口：50001
-  static String get imWsUrl {
-    return (_isIP ? "ws://$_host:10001" : "wss://$_host/msg_gateway");
-  }
-
-  /// VeryReal 业务务器地址
+  /// App 业务务器地址
   /// $apiScheme://$host/wdc-social/api/$_apiVersion/
   /// $apiScheme://$host:50008
   /// 端口：50008
@@ -192,32 +138,12 @@ class Config {
         : "https://$_host/wdc-social/api/$_apiVersion");
   }
 
-  /// VeryReal 虚拟货币务器地址
-  /// $apiScheme://$host/wdc-social/api/$_apiVersion/
-  /// $apiScheme://$host:50008
-  /// 端口：50008
-  static String get appCryptoUrl {
-    return (_isIP
-        ? "http://$_host:10008"
-        : "https://$_host/wdc-crypto/api/$_apiVersion");
-  }
-
-  /// VeryReal websocket 业务务器地址
+  /// App websocket 业务务器地址
   /// $apiScheme://$host/wdc-social/api/$_apiVersion/
   /// $apiScheme://$host:50008
   /// 端口：50008
   static String get appBusinessWsUrl {
     return "wss://$_host/wdc-social/ws/$_apiVersion";
-  }
-
-  /// VeryReal 第三方业务务器地址
-  /// $apiScheme://$host/wdc-social/third-party-login/
-  /// $apiScheme://$host:50008
-  /// 端口：50008
-  static String get appThirdPartyLoginUrl {
-    return (_isIP
-        ? "http://$_host:10008"
-        : "https://$_host/wdc-social/third-party-login");
   }
 
   /// 图片存储

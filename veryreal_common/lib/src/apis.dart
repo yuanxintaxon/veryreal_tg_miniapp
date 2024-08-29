@@ -53,7 +53,7 @@ class Apis {
     // Present the dialog to the user
     final result = await FlutterWebAuth2.authenticate(
       url:
-          '${Urls.humanCodeRegistration}?session_id=$sessionId&callback_url=${Urls.callBackUrl}',
+          '${Urls.humanCodeRegistration}?session_id=$sessionId&callback_url=${Urls.tgCallBackUrl}',
       callbackUrlScheme: "https",
     );
 

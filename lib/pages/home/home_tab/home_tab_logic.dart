@@ -18,8 +18,7 @@ class HomeTabLogic extends GetxController {
     final sessionId = parameters['session_id'];
 
     if (vcode != null && vcode != 'error' && sessionId != null) {
-      replaceUrlAndRefresh(
-          "${Urls.tgCallBackUrl}?startapp=${sessionId}_${vcode}");
+      navigateTo("${Urls.tgCallBackUrl}?startapp=${sessionId}_${vcode}");
     }
 
     DateTime now = DateTime.now();
@@ -44,12 +43,8 @@ class HomeTabLogic extends GetxController {
     super.onReady();
   }
 
-  void replaceUrlAndRefresh(String newUrl) {
-    // Replace the current URL
-    html.window.history.replaceState(null, '', newUrl);
-
-    // Refresh the page
-    html.window.location.reload();
+  void navigateTo(String newUrl) {
+    IMUtils.launch(newUrl, isNewTab: false);
   }
 
   void download() async {

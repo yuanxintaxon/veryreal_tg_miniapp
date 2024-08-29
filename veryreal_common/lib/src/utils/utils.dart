@@ -956,6 +956,13 @@ class IMUtils {
     return hmac.convert(utf8.encode(body)).toString();
   }
 
+  static Future<void> launch(String url, {bool isNewTab = true}) async {
+    await launchUrl(
+      Uri.parse(url),
+      webOnlyWindowName: isNewTab ? '_blank' : '_self',
+    );
+  }
+
   static Future<void> runDelayed(
       {required int seconds, required void Function() fn}) async {
     await Future.delayed(Duration(seconds: seconds), () => fn());

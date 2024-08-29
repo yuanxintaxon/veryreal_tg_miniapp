@@ -73,16 +73,12 @@ class Apis {
     IMViews.showToast("callback url $Urls.callBackUrl");
     final result = await FlutterWebAuth2.authenticate(
       url:
-          '${Urls.humanCodeVerification}?session_id=$sessionId&callback_url=${Urls.tgCallBackUrl}',
+          '${Urls.humanCodeVerification}?session_id=$sessionId&callback_url=${Urls.callBackUrl}',
       callbackUrlScheme: "https",
     );
 
     // Extract token from resulting url
     final params = Uri.parse(result).queryParameters;
-    IMViews.showToast("params $params");
-    final vcode = params['vcode'];
-    final code = params['error_code'];
-    final session_id = params['session_id'];
 
     return params;
   }

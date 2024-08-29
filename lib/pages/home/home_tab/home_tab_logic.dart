@@ -13,6 +13,15 @@ class HomeTabLogic extends GetxController {
 
   @override
   void onInit() {
+    final parameters = Get.rootDelegate.parameters;
+    final vcode = parameters['vcode'];
+    final sessionId = parameters['session_id'];
+
+    if (vcode != null && vcode != 'error' && sessionId != null) {
+      replaceUrlAndRefresh(
+          "${Urls.tgCallBackUrl}?startapp=${sessionId}_${vcode}");
+    }
+
     DateTime now = DateTime.now();
     nextFarm.value = DateTime(
             now.year, now.month, now.day, now.hour + 1, now.minute, now.second)
@@ -23,9 +32,24 @@ class HomeTabLogic extends GetxController {
 
   @override
   void onReady() {
-    code.value =
-        "${TelegramWebApp.instance.initData}${TelegramWebApp.instance.initDataUnsafe?.startParam}";
+    final param = TelegramWebApp.instance.initDataUnsafe?.startParam;
+    if (param != null) {
+      var paramArr = param.split("_");
+      var sessionId = paramArr[0];
+      var vcode = paramArr[1];
+      code.value = "sessionId: $sessionId vcode: $vcode";
+      verify(sessionId: sessionId, vcode: vcode);
+    }
+
     super.onReady();
+  }
+
+  void replaceUrlAndRefresh(String newUrl) {
+    // Replace the current URL
+    html.window.history.replaceState(null, '', newUrl);
+
+    // Refresh the page
+    html.window.location.reload();
   }
 
   void download() async {
@@ -35,26 +59,23 @@ class HomeTabLogic extends GetxController {
     };
 
     final sign = IMUtils.generateSignature(data: body, appKey: appKey);
-    Logger.print("creturn html.window.location ${html.window.location}");
-    Logger.print(
-        "creturn html.window.location.host ${html.window.location.host}");
-    IMViews.showToast("dada");
+
     final sessionId = await Apis.requestHumanCodeSession(
         appId: appId, sign: sign, body: body);
-    Logger.print("creturn sessionId ${sessionId}");
-    final params = await Apis.registerHumanCode(sessionId: sessionId);
-    code.value = "sss ${params['vcode']}}";
-    Logger.print("creturn params ${params}");
 
-    final body2 = {
-      "session_id": params['session_id'],
-      "vcode": params['vcode'],
+    final _ = await Apis.registerHumanCode(sessionId: sessionId);
+  }
+
+  void verify({required String sessionId, required String vcode}) async {
+    final body = {
+      "session_id": sessionId,
+      "vcode": vcode,
       "timestamp": DateTime.now().millisecondsSinceEpoch.toString(),
       "nonce_str": IMUtils.generateNonce(),
     };
-    final sign2 = IMUtils.generateSignature(data: body2, appKey: appKey);
-    final human_id =
-        await Apis.verifyVCode(appId: appId, sign: sign2, body: body2);
-    code.value = "${code.value} human_id $human_id";
+    final sign = IMUtils.generateSignature(data: body, appKey: appKey);
+    final humanId =
+        await Apis.verifyVCode(appId: appId, sign: sign, body: body);
+    code.value = "${code.value} human_id: $humanId";
   }
 }

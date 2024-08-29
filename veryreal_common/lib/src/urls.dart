@@ -9,7 +9,7 @@ class Urls {
 
   // callbackURL
   static final deployedSite = "https://veryreal-tg-miniapp.vercel.app/#/home";
-  static final callBackUrl = "https://${html.window.location.host}";
+  static final callBackUrl = "https://${html.window.location.host}/#/home";
   static final tgCallBackUrl = "https://t.me/veryreal_test_bot/veryreal_test";
   // human code
   static final requestHumanCodeSession =

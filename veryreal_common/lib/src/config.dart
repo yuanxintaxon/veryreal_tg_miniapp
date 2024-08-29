@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:telegram_web_app/telegram_web_app.dart';
 import 'package:veryreal_common/veryreal_common.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:timeago/timeago.dart' as Timeago;
@@ -34,6 +35,8 @@ class Config {
       _setupLocaleForTimeAgo();
     } catch (_) {}
 
+    // start telegram
+    await _startTelegram();
     // ================== run app here ==================
     runApp();
     // ==================================================
@@ -54,6 +57,22 @@ class Config {
 
     // cremove on web
     // FlutterBugly.init(androidAppId: "", iOSAppId: "");
+  }
+
+  static Future<void> _startTelegram() async {
+    try {
+      if (TelegramWebApp.instance.isSupported) {
+        await TelegramWebApp.instance.ready();
+        Future.delayed(
+            const Duration(seconds: 1), TelegramWebApp.instance.expand);
+      }
+    } catch (e) {
+      print("Error happened in Flutter while loading Telegram $e");
+      // add delay for 'Telegram seldom not loading' bug
+      await Future.delayed(const Duration(milliseconds: 200));
+      await _startTelegram();
+      return;
+    }
   }
 
   static void _setupGoogleFontLicenses() {

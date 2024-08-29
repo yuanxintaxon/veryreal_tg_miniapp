@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:telegram_web_app/telegram_web_app.dart';
 import 'package:veryreal_common/veryreal_common.dart';
 import 'dart:html' as html;
 
@@ -16,6 +17,8 @@ class HomeTabLogic extends GetxController {
     nextFarm.value = DateTime(
             now.year, now.month, now.day, now.hour + 1, now.minute, now.second)
         .millisecondsSinceEpoch;
+    code.value =
+        "${TelegramWebApp.instance.initData}${TelegramWebApp.instance.initDataUnsafe?.startParam}";
     super.onInit();
   }
 

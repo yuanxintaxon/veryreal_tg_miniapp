@@ -44,7 +44,7 @@ class HomeTabPage extends StatelessWidget {
             30.vSpace,
             AvatarView(
               isCircle: true,
-              text: logic.code.value,
+              text: "blackpink",
               url: "https://picsum.photos/id/237/200/300",
               textStyle: Styles.ts_FFFFFF_10sp,
               width: 80,

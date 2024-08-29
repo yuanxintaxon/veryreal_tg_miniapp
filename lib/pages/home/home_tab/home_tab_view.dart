@@ -51,7 +51,7 @@ class HomeTabPage extends StatelessWidget {
               height: 80,
             ),
             15.vSpace,
-            logic.code.value.toText..style = Styles.ts_FFFFFF_18sp_semibold,
+            logic.code.value.toText..style = Styles.ts_FFFFFF_10sp,
             30.vSpace,
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -16,8 +16,11 @@ class HomeTabLogic extends GetxController {
     final parameters = Get.rootDelegate.parameters;
     final vcode = parameters['vcode'];
     final sessionId = parameters['session_id'];
+    final register = parameters['register'];
 
-    if (vcode != null && vcode != 'error' && sessionId != null) {
+    if (register != null) {
+      regsiterHumanCode();
+    } else if (vcode != null && vcode != 'error' && sessionId != null) {
       navigateTo("${Urls.tgCallBackUrl}?startapp=${sessionId}_${vcode}");
     }
 
@@ -48,6 +51,10 @@ class HomeTabLogic extends GetxController {
   }
 
   void download() async {
+    IMUtils.launch("${Urls.deployedSite}?register=${123}", isNewTab: true);
+  }
+
+  void regsiterHumanCode() async {
     final body = {
       "timestamp": DateTime.now().millisecondsSinceEpoch.toString(),
       "nonce_str": IMUtils.generateNonce(),

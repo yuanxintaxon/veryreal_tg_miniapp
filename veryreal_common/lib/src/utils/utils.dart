@@ -923,6 +923,20 @@ class IMUtils {
     }
   }
 
+  static void launchWebpage(String url) async {
+    try {
+      final uri = Uri.parse(url);
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri,
+            mode: LaunchMode.platformDefault); //open with in-app browser
+      } else {
+        throw 'Could not launch $uri';
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   static Future<void> runDelayed(
       {required int seconds, required void Function() fn}) async {
     await Future.delayed(Duration(seconds: seconds), () => fn());

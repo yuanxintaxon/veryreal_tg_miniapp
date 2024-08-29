@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:veryreal_common/veryreal_common.dart';
 
 class HomeTabLogic extends GetxController {
   final inProgressPercent = 0.0.obs;
@@ -14,4 +15,7 @@ class HomeTabLogic extends GetxController {
     super.onInit();
   }
 
+void download() {
+  IMUtils.launchWebpage("https://nodeflair.com/");
+}
 }

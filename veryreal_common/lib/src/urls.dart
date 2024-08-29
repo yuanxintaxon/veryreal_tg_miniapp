@@ -8,7 +8,7 @@ class Urls {
   static final reverseProxy = "https://thingproxy.freeboard.io/fetch/";
 
   // callbackURL
-  static final callBackUrl = "https://${Uri.base}}/auth.html";
+  static final callBackUrl = "https://${html.window.location.host}}/auth.html";
   static final tgCallBackUrl = "https://t.me/veryreal_test_bot/veryreal_test";
   // human code
   static final requestHumanCodeSession =
@@ -17,6 +17,5 @@ class Urls {
       "https://humancodeai.com/registration/index.html";
   static final humanCodeVerification =
       "https://humancodeai.com/verification/index.html";
-  static final verifyVCode =
-      "https://humancodeai.com/api/vcode/v2/verify";
+  static final verifyVCode = "https://humancodeai.com/api/vcode/v2/verify";
 }

@@ -1,11 +1,9 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:veryreal_common/veryreal_common.dart';
+
 import 'home_tab_logic.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class HomeTabPage extends StatelessWidget {
   final logic = Get.find<HomeTabLogic>();

@@ -1,7 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
-import 'dart:html' as html;
 import 'package:dio/dio.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:veryreal_common/veryreal_common.dart';
@@ -59,7 +55,7 @@ class Apis {
     // Present the dialog to the user
     final result = await FlutterWebAuth2.authenticate(
       url:
-          '${Urls.humanCodeRegistration}?session_id=$sessionId&callback_url=https://${html.window.location.host}',
+          '${Urls.humanCodeRegistration}?session_id=$sessionId&callback_url=${Urls.callBackUrl}',
       callbackUrlScheme: "https",
     );
 

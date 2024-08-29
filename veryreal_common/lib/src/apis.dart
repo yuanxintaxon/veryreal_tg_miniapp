@@ -12,8 +12,6 @@ class Apis {
         'token': await DataSp.chatToken,
         'platform': IMUtils.getPlatform(),
       });
-  // static String get operationID =>
-  //     DateTime.now().millisecondsSinceEpoch.toString();
 
   static Options get langOptions => Options(headers: {
         'lang': TranslationService.reverseLanguageKeys[

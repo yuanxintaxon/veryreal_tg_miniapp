@@ -8,7 +8,8 @@ class Urls {
   static final reverseProxy = "https://thingproxy.freeboard.io/fetch/";
 
   // callbackURL
-  static final callBackUrl = "https://${html.window.location.host}}/auth.html";
+  static final deployedSite = "https://veryreal-tg-miniapp.vercel.app/#/home";
+  static final callBackUrl = "https://${html.window.location.host}/auth.html";
   static final tgCallBackUrl = "https://t.me/veryreal_test_bot/veryreal_test";
   // human code
   static final requestHumanCodeSession =

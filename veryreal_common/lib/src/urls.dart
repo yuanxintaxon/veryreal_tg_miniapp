@@ -9,6 +9,7 @@ class Urls {
 
   // callbackURL
   static final callBackUrl = "https://${html.window.location.host}/auth.html";
+  static final tgCallBackUrl = "https://t.me/veryreal_test_bot/veryreal_test?startapp";
   // human code
   static final requestHumanCodeSession =
       "https://humancodeai.com/api/session/v2/get_id";

@@ -70,6 +70,7 @@ class Apis {
   static Future<Map<String, String>> verifyHumanCode(
       {required String sessionId}) async {
     // Present the dialog to the user
+    IMViews.showToast("callback url $Urls.callBackUrl");
     final result = await FlutterWebAuth2.authenticate(
       url:
           '${Urls.humanCodeVerification}?session_id=$sessionId&callback_url=${Urls.callBackUrl}',

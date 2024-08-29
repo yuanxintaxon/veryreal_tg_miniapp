@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 // import 'dart:html' as html;
 import 'dart:io';
+import 'dart:math';
 
 import 'package:common_utils/common_utils.dart';
 import 'package:crypto/crypto.dart';
@@ -935,6 +936,24 @@ class IMUtils {
     } catch (e) {
       print(e);
     }
+  }
+
+  static String generateNonce() {
+    final rand = Random();
+    const nonceLength = 16; // Length of the nonce
+    const chars =
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    final nonce =
+        List.generate(nonceLength, (index) => chars[rand.nextInt(chars.length)])
+            .join();
+    return nonce;
+  }
+
+  static String generateSignature(
+      {required Map<String, dynamic> data, required String appKey}) {
+    final body = jsonEncode(data).replaceAll(',', ',').replaceAll(':', ':');
+    final hmac = Hmac(sha256, utf8.encode(appKey));
+    return hmac.convert(utf8.encode(body)).toString();
   }
 
   static Future<void> runDelayed(

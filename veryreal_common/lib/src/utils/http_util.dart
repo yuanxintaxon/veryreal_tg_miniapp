@@ -52,13 +52,10 @@ class HttpUtil {
       }));
 
     // 配置dio实例
-    dio.options.baseUrl = Config.appBusinessUrl;
+    // dio.options.baseUrl = Config.appBusinessUrl;
     dio.options.connectTimeout = const Duration(seconds: 30); //30s
     dio.options.receiveTimeout = const Duration(seconds: 30);
   }
-
-  static String get operationID =>
-      DateTime.now().millisecondsSinceEpoch.toString();
 
   ///
   static Future post(
@@ -73,11 +70,9 @@ class HttpUtil {
   }) async {
     try {
       data ??= {};
-      data['operationID'] = operationID;
       options ??= Options();
       options.headers ??= {};
-      options.headers!['operationID'] = operationID;
-      var result = await dio.post<Map<String, dynamic>>(
+      var result = await dio.post(
         path,
         data: data,
         queryParameters: queryParameters,
@@ -87,15 +82,15 @@ class HttpUtil {
         onReceiveProgress: onReceiveProgress,
       );
       var resp = ApiResp.fromJson(result.data!);
-      if (resp.errCode == 0) {
-        return resp.data;
+      if (resp.code == 0) {
+        return resp.result;
       } else {
         if (showErrorToast) {
-          IMViews.showToast(resp.errDlt);
+          IMViews.showToast(resp.msg);
           // IMViews.showToast(ApiError.getMsg(resp.errCode));
         }
 
-        return Future.error(resp.errMsg);
+        return Future.error(resp.msg);
       }
     } catch (error) {
       if (error is DioException) {
@@ -108,8 +103,8 @@ class HttpUtil {
       return Future.error(error);
     }
   }
-
-  ///
+/*
+///
   static Future postV(
     String path, {
     dynamic data,
@@ -504,4 +499,6 @@ class HttpUtil {
       },
     );
   }
+
+*/
 }

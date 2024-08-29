@@ -66,6 +66,7 @@ class Config {
         Future.delayed(
             const Duration(seconds: 1), TelegramWebApp.instance.expand);
       }
+      print("Telegram  supported");
     } catch (e) {
       print("Error happened in Flutter while loading Telegram $e");
       // add delay for 'Telegram seldom not loading' bug

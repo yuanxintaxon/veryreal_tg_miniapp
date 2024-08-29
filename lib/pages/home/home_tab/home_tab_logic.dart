@@ -14,14 +14,10 @@ class HomeTabLogic extends GetxController {
   @override
   void onInit() {
     final parameters = Get.rootDelegate.parameters;
-    final vcode = parameters['vcode'];
-    final sessionId = parameters['session_id'];
     final register = parameters['register'];
 
     if (register != null) {
       regsiterHumanCode();
-    } else if (vcode != null && vcode != 'error' && sessionId != null) {
-      navigateTo("${Urls.tgCallBackUrl}?startapp=${sessionId}_${vcode}");
     }
 
     DateTime now = DateTime.now();
@@ -65,7 +61,10 @@ class HomeTabLogic extends GetxController {
     final sessionId = await Apis.requestHumanCodeSession(
         appId: appId, sign: sign, body: body);
 
-    final _ = await Apis.registerHumanCode(sessionId: sessionId);
+    final params = await Apis.registerHumanCode(sessionId: sessionId);
+
+    navigateTo(
+        "${Urls.tgCallBackUrl}?startapp=${params['session_id']}_${params['vcode']}");
   }
 
   void verify({required String sessionId, required String vcode}) async {

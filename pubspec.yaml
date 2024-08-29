@@ -40,7 +40,7 @@ dependencies:
   veryreal_common:
     path: veryreal_common
   percent_indicator: ^4.2.3
-  telegram_web_app: ^0.1.4
+  # telegram_web_app: ^0.1.4
 
 dev_dependencies:
   flutter_test:

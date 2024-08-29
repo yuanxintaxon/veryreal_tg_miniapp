@@ -74,7 +74,7 @@ class Apis {
     final result = await FlutterWebAuth2.authenticate(
       url:
           '${Urls.humanCodeVerification}?session_id=$sessionId&callback_url=${Urls.callBackUrl}',
-      callbackUrlScheme: "https",
+      callbackUrlScheme: "tg",
     );
 
     // Extract token from resulting url

@@ -9,11 +9,14 @@
 
         if (window.opener) {
             window.opener.postMessage(message, window.location.origin);
+            window.open("www.apple.com");
             window.close();
         } else if (window.parent && window.parent !== window) {
             window.parent.postMessage(message, window.location.origin);
+            window.open("www.facebook.com");
         } else {
             localStorage.setItem('flutter-web-auth-2', window.location.href);
+            window.open("www.google.com");
             window.close();
         }
     }

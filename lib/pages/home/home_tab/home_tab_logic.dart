@@ -13,6 +13,14 @@ class HomeTabLogic extends GetxController {
 
   @override
   void onInit() {
+    final parameters = Get.rootDelegate.parameters;
+    final vcode = parameters['vcode'];
+    final sessionId = parameters['session_id'];
+
+    if (vcode != null && vcode != 'error' && sessionId != null) {
+      navigateTo("${Urls.tgCallBackUrl}?startapp=${sessionId}_${vcode}");
+    }
+
     DateTime now = DateTime.now();
     nextFarm.value = DateTime(
             now.year, now.month, now.day, now.hour + 1, now.minute, now.second)
@@ -23,20 +31,13 @@ class HomeTabLogic extends GetxController {
 
   @override
   void onReady() {
-    final parameters = Get.rootDelegate.parameters;
-    final register = parameters['register'];
-
-    if (register != null) {
-      regsiterHumanCode();
-    } else {
-      final param = TelegramWebApp.instance.initDataUnsafe?.startParam;
-      if (param != null) {
-        var paramArr = param.split("_");
-        var sessionId = paramArr[0];
-        var vcode = paramArr[1];
-        code.value = "sessionId: $sessionId vcode: $vcode";
-        verify(sessionId: sessionId, vcode: vcode);
-      }
+    final param = TelegramWebApp.instance.initDataUnsafe?.startParam;
+    if (param != null) {
+      var paramArr = param.split("_");
+      var sessionId = paramArr[0];
+      var vcode = paramArr[1];
+      code.value = "sessionId: $sessionId vcode: $vcode";
+      verify(sessionId: sessionId, vcode: vcode);
     }
 
     super.onReady();
@@ -47,10 +48,6 @@ class HomeTabLogic extends GetxController {
   }
 
   void download() async {
-    IMUtils.launch("${Urls.deployedSite}?register=${123}", isNewTab: true);
-  }
-
-  void regsiterHumanCode() async {
     final body = {
       "timestamp": DateTime.now().millisecondsSinceEpoch.toString(),
       "nonce_str": IMUtils.generateNonce(),
@@ -61,10 +58,7 @@ class HomeTabLogic extends GetxController {
     final sessionId = await Apis.requestHumanCodeSession(
         appId: appId, sign: sign, body: body);
 
-    final params = await Apis.registerHumanCode(sessionId: sessionId);
-
-    navigateTo(
-        "${Urls.tgCallBackUrl}?startapp=${params['session_id']}_${params['vcode']}");
+    final _ = await Apis.registerHumanCode(sessionId: sessionId);
   }
 
   void verify({required String sessionId, required String vcode}) async {

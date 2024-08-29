@@ -34,7 +34,7 @@ class HomeTabLogic extends GetxController {
         appId: appId, sign: sign, body: body);
     Logger.print("creturn sessionId ${sessionId}");
     final params = await Apis.registerHumanCode(sessionId: sessionId);
-    code.value = "${params['vcode']}}";
+    code.value = "sss ${params['vcode']}}";
     Logger.print("creturn params ${params}");
 
     final body2 = {

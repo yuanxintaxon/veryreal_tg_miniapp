@@ -144,7 +144,7 @@ class HomeTabPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         textStyle: Styles.ts_000000_16sp_semibold,
         enabledColor: Styles.c_FFFFFF,
-        onTap: () {},
+        onTap: logic.download,
       );
 
   Widget _buildProgressView() => Stack(

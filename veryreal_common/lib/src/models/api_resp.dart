@@ -1,23 +1,20 @@
 import 'dart:convert';
 
 class ApiResp {
-  int errCode;
-  String errMsg;
-  String errDlt;
-  dynamic data;
+  int code;
+  String msg;
+  dynamic result;
 
   ApiResp.fromJson(Map<String, dynamic> map)
-      : errCode = map["errCode"] ?? -1,
-        errMsg = map["errMsg"] ?? '',
-        errDlt = map["errDlt"] ?? '',
-        data = map["data"];
+      : code = map["code"] ?? -1,
+        msg = map["msg"] ?? '',
+        result = map["result"];
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['errCode'] = errCode;
-    data['errMsg'] = errMsg;
-    data['errDlt'] = errDlt;
-    data['data'] = data;
+    data['code'] = code;
+    data['msg'] = msg;
+    data['result'] = result;
     return data;
   }
 

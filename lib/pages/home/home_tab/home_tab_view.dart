@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:veryreal_common/veryreal_common.dart';
+
 import 'home_tab_logic.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class HomeTabPage extends StatelessWidget {
   final logic = Get.find<HomeTabLogic>();
@@ -44,7 +44,7 @@ class HomeTabPage extends StatelessWidget {
             30.vSpace,
             AvatarView(
               isCircle: true,
-              text: "Black Dog",
+              text: logic.code.value,
               url: "https://picsum.photos/id/237/200/300",
               textStyle: Styles.ts_FFFFFF_10sp,
               width: 80,

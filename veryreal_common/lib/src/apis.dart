@@ -59,10 +59,47 @@ class Apis {
 
     // Extract token from resulting url
     final params = Uri.parse(result).queryParameters;
+    IMViews.showToast("params $params");
     final vcode = params['vcode'];
     final code = params['error_code'];
     final session_id = params['session_id'];
 
     return params;
+  }
+
+  static Future<Map<String, String>> verifyHumanCode(
+      {required String sessionId}) async {
+    // Present the dialog to the user
+    final result = await FlutterWebAuth2.authenticate(
+      url:
+          '${Urls.humanCodeVerification}?session_id=$sessionId&callback_url=${Urls.callBackUrl}',
+      callbackUrlScheme: "https",
+    );
+
+    // Extract token from resulting url
+    final params = Uri.parse(result).queryParameters;
+    IMViews.showToast("params $params");
+    final vcode = params['vcode'];
+    final code = params['error_code'];
+    final session_id = params['session_id'];
+
+    return params;
+  }
+
+  static Future<String> verifyVCode({
+    required String appId,
+    required String sign,
+    required dynamic body,
+  }) async {
+    final result = await HttpUtil.post(
+      Urls.verifyVCode,
+      queryParameters: {
+        'app_id': appId,
+        'sign': sign,
+      },
+      data: body,
+    );
+
+    return result['human_id'];
   }
 }

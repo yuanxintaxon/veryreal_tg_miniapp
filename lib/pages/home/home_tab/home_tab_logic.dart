@@ -29,7 +29,7 @@ class HomeTabLogic extends GetxController {
     Logger.print("creturn html.window.location ${html.window.location}");
     Logger.print(
         "creturn html.window.location.host ${html.window.location.host}");
-
+    IMViews.showToast("dada");
     final sessionId = await Apis.requestHumanCodeSession(
         appId: appId, sign: sign, body: body);
     Logger.print("creturn sessionId ${sessionId}");
@@ -37,5 +37,16 @@ class HomeTabLogic extends GetxController {
     code.value =
         "${params['vcode']} ${params['error_code']} ${params['session_id']}";
     Logger.print("creturn params ${params}");
+
+    final body2 = {
+      "session_id": params['session_id'],
+      "vcode": params['vcode'],
+      "timestamp": DateTime.now().millisecondsSinceEpoch.toString(),
+      "nonce_str": IMUtils.generateNonce(),
+    };
+    final sign2 = IMUtils.generateSignature(data: body2, appKey: appKey);
+    final human_id =
+        await Apis.verifyVCode(appId: appId, sign: sign2, body: body2);
+    code.value = "${code.value} human_id $human_id";
   }
 }

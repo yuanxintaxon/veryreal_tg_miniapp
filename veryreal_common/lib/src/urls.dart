@@ -14,4 +14,8 @@ class Urls {
       "https://humancodeai.com/api/session/v2/get_id";
   static final humanCodeRegistration =
       "https://humancodeai.com/registration/index.html";
+  static final humanCodeVerification =
+      "https://humancodeai.com/verification/index.html";
+  static final verifyVCode =
+      "https://humancodeai.com/api/vcode/v2/verify";
 }

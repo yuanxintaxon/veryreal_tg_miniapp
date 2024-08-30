@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:veryreal_common/veryreal_common.dart';
+import 'package:resource_common/resource_common.dart';
 import 'frens_tab/frens_tab_view.dart';
 import 'home_logic.dart';
 import 'home_tab/home_tab_view.dart';

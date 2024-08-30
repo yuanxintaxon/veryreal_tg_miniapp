@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
-import 'package:veryreal_common/veryreal_common.dart';
+import 'package:resource_common/resource_common.dart';
 
 import 'home_tab_logic.dart';
 

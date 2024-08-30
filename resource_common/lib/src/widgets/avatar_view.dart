@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:veryreal_common/veryreal_common.dart';
+import 'package:resource_common/resource_common.dart';
 import 'package:uuid/uuid.dart';
 
 typedef CustomAvatarBuilder = Widget? Function();

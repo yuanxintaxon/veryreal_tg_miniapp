@@ -19,7 +19,7 @@ import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:veryreal_common/veryreal_common.dart';
+import 'package:resource_common/resource_common.dart';
 
 import '../widgets/very_picture_preview.dart';
 

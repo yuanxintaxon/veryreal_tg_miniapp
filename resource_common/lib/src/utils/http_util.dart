@@ -3,7 +3,7 @@ import 'dart:ui';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:veryreal_common/veryreal_common.dart';
+import 'package:resource_common/resource_common.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
 
 var dio = Dio();

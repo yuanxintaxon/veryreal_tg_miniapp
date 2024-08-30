@@ -1,4 +1,4 @@
-import 'package:veryreal_common/veryreal_common.dart';
+import 'package:resource_common/resource_common.dart';
 import 'package:sprintf/sprintf.dart';
 import 'package:uuid/uuid.dart';
 

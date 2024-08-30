@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:telegram_web_app/telegram_web_app.dart';
-import 'package:veryreal_common/veryreal_common.dart';
+import 'package:resource_common/resource_common.dart';
 import 'dart:html' as html;
 
 class HomeTabLogic extends GetxController {

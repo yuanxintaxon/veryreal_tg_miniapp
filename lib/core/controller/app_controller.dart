@@ -2,7 +2,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:veryreal_common/veryreal_common.dart';
+import 'package:resource_common/resource_common.dart';
 
 class AppController extends GetxController {
   final languageMap = TranslationService.languages;

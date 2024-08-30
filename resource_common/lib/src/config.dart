@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:telegram_web_app/telegram_web_app.dart';
-import 'package:veryreal_common/veryreal_common.dart';
+import 'package:resource_common/resource_common.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:timeago/timeago.dart' as Timeago;
 

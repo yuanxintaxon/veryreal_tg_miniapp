@@ -11,7 +11,7 @@ import 'package:flutter_picker_plus/flutter_picker_plus.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:veryreal_common/veryreal_common.dart';
+import 'package:resource_common/resource_common.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:uuid/uuid.dart';
 

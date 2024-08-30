@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
-import 'package:veryreal_common/veryreal_common.dart';
+import 'package:resource_common/resource_common.dart';
 
 class Apis {
   static Future<Options> get imTokenOptions async => Options(headers: {

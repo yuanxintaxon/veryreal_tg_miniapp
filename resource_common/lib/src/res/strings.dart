@@ -1,7 +1,7 @@
 import 'dart:ui';
 import 'package:get/get.dart';
 
-import '../../veryreal_common.dart';
+import '../../resource_common.dart';
 import 'lang/de_DE.dart';
 import 'lang/en_US.dart';
 import 'lang/es_ES.dart';

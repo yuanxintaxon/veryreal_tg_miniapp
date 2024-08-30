@@ -87,7 +87,7 @@ class LottieView extends StatelessWidget {
       name,
       height: height,
       width: width,
-      package: 'veryreal_common',
+      package: 'resource_common',
       fit: fit,
     );
   }
@@ -163,7 +163,7 @@ class ImageView extends StatelessWidget {
           opacity: opacity,
           child: Image.asset(
             name,
-            package: 'veryreal_common',
+            package: 'resource_common',
             width: width,
             height: height,
             color: color,

@@ -1,4 +1,4 @@
-library veryreal_common;
+library resource_common;
 
 export 'src/apis.dart';
 export 'src/config.dart';

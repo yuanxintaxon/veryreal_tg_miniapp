@@ -7,7 +7,7 @@ import 'package:resource_common/resource_common.dart';
 class ImageUtil {
   ImageUtil._();
 
-  static const _package = "veryreal_common";
+  static const _package = "resource_common";
 
   static Widget assetImage(
     String res, {

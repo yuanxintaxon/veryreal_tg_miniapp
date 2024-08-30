@@ -37,7 +37,6 @@ dependencies:
   visibility_detector: ^0.4.0+2
   mime: ^1.0.4
   google_fonts: ^6.2.1
-  gradient_borders: ^1.0.0
   image_downloader_web: ^2.0.6
   timeago: ^3.6.1
   collection: ^1.18.0

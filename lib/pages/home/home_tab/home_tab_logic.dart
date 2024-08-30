@@ -6,21 +6,14 @@ import 'dart:html' as html;
 class HomeTabLogic extends GetxController {
   final inProgressPercent = 0.0.obs;
   final nextFarm = 0.obs;
+  final code = "".obs;
+
   final String appId = "a_b507f99c6ff6451c";
   final String appKey =
       "5f8f7256b0aeb24e728c41993c02c726dc4892d73d54eb4ddab5771ac25d01b2";
-  final code = "".obs;
 
   @override
   void onInit() {
-    final parameters = Get.rootDelegate.parameters;
-    final vcode = parameters['vcode'];
-    final sessionId = parameters['session_id'];
-
-    if (vcode != null && vcode != 'error' && sessionId != null) {
-      navigateTo("${Urls.tgCallBackUrl}?startapp=${sessionId}_${vcode}");
-    }
-
     DateTime now = DateTime.now();
     nextFarm.value = DateTime(
             now.year, now.month, now.day, now.hour + 1, now.minute, now.second)
@@ -41,10 +34,6 @@ class HomeTabLogic extends GetxController {
     }
 
     super.onReady();
-  }
-
-  void navigateTo(String newUrl) {
-    IMUtils.launch(newUrl, isNewTab: false);
   }
 
   void download() async {

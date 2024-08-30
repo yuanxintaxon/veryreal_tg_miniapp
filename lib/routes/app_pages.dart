@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 
 import '../pages/home/home_binding.dart';
 import '../pages/home/home_view.dart';
+import '../pages/redirect/redirect_binding.dart';
+import '../pages/redirect/redirect_view.dart';
 import '../pages/welcome/welcome_binding.dart';
 import '../pages/welcome/welcome_view.dart';
 
@@ -49,6 +51,12 @@ class AppPages {
       name: AppRoutes.welcome,
       page: () => WelcomePage(),
       binding: WelcomeBinding(),
+      // middlewares: [AuthGuard(), ArgumentMiddleware()],
+    ),
+    _pageBuilder(
+      name: AppRoutes.redirect,
+      page: () => RedirectPage(),
+      binding: RedirectBinding(),
       // middlewares: [AuthGuard(), ArgumentMiddleware()],
     ),
     _pageBuilder(

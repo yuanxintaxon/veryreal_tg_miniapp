@@ -9,7 +9,7 @@ class RedirectLogic extends GetxController {
     final sessionId = parameters['session_id'];
 
     if (vcode != null && vcode != 'error' && sessionId != null) {
-      navigateTo("${Urls.tgCallBackUrl}?startapp=${sessionId}_${vcode}");
+      navigateTo("${Urls.tgMiniAppUrl}?startapp=${sessionId}_${vcode}");
     }
     super.onInit();
   }
